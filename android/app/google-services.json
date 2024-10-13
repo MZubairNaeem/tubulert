@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185352644800",
+    "project_id": "tubulert-cd32b",
+    "storage_bucket": "tubulert-cd32b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185352644800:android:b779dd8154abbcf2b12525",
+        "android_client_info": {
+          "package_name": "com.example.tubulert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsdENGFG_JISMqae0X62l6TKobfP1WCU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
