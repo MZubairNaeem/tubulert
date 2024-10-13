@@ -75,7 +75,7 @@ class Onboardingscreen1 extends StatelessWidget {
                 color: white,
               ),
             ),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (_) => const Onboardingscreen2(),

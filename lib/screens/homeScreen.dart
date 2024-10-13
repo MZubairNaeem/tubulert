@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.pink,
+    return const Scaffold(
+      backgroundColor: cuspink,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -15,9 +16,7 @@ class Homescreen extends StatelessWidget {
             child: Text(
               'Hy Firebase is working Well :)',
               style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                  fontSize: 22, fontWeight: FontWeight.bold, color: white),
             ),
           ),
         ],

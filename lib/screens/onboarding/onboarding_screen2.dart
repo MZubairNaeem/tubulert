@@ -76,7 +76,7 @@ class Onboardingscreen2 extends StatelessWidget {
                 color: white,
               ),
             ),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (_) => LoginScreen(),
