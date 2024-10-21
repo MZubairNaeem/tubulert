@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       body: ListView(
         children: [
           Padding(
@@ -200,8 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           )
                         : Text(
                             'Sign Up',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18.sp),
+                            style: TextStyle(color: white, fontSize: 18.sp),
                           ),
                   ),
                   SizedBox(height: 4.h),
@@ -210,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => const LoginScreen(),
                         ),
                       );
                     },

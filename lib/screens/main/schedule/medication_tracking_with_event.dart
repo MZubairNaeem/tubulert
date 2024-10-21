@@ -1,21 +1,19 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 
-class MedicationTrackingScreen2 extends StatelessWidget {
+class MedicationTrackingWithEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(
           Icons.arrow_back,
-          color: Colors.white,
+          color: white,
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -24,7 +22,7 @@ class MedicationTrackingScreen2 extends StatelessWidget {
               Text(
                 'Medication Tracking',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: white,
                   fontSize: 22.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -36,14 +34,14 @@ class MedicationTrackingScreen2 extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       body: Padding(
         padding: EdgeInsets.all(5.w),
         child: Column(
@@ -66,15 +64,15 @@ class MedicationTrackingScreen2 extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        splashColor: Colors.pink,
+        splashColor: cuspink,
         onPressed: () {
           // Add new event
         },
-        backgroundColor: Colors.pink,
+        backgroundColor: cuspink,
         child: Icon(
           Icons.add,
           size: 28.sp,
-          color: Colors.white,
+          color: white,
         ),
       ),
     );
@@ -105,14 +103,14 @@ class MedicationTrackingScreen2 extends StatelessWidget {
           style: TextStyle(
             fontSize: 15.sp,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? Colors.pink : Colors.pink,
+            color: isSelected ? cuspink : cuspink,
           ),
         ),
         SizedBox(height: 1.h),
         Container(
           padding: EdgeInsets.all(1.w),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.pink : Colors.transparent,
+            color: isSelected ? cuspink : Colors.transparent,
             shape: BoxShape.circle,
           ),
           child: Text(
@@ -120,7 +118,7 @@ class MedicationTrackingScreen2 extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected ? white : Colors.pink,
+              color: isSelected ? white : cuspink,
             ),
           ),
         ),
@@ -145,13 +143,13 @@ class MedicationTrackingScreen2 extends StatelessWidget {
       ),
       child: ListTile(
         leading: Image.asset(assetPath, height: 8.h, fit: BoxFit.contain),
-        title: Text(medicine,
-            style: TextStyle(fontSize: 16.sp, color: Colors.pink)),
+        title:
+            Text(medicine, style: TextStyle(fontSize: 16.sp, color: cuspink)),
         subtitle: Text('$dose - $time',
-            style: TextStyle(fontSize: 14.sp, color: Colors.pink)),
+            style: TextStyle(fontSize: 14.sp, color: cuspink)),
         trailing: Icon(
           Icons.more_vert,
-          color: Colors.pink,
+          color: cuspink,
         ),
       ),
     );

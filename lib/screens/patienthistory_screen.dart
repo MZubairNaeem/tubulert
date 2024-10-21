@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class PatientHistoryScreen extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class PatientHistoryScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -39,10 +40,10 @@ class PatientHistoryScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -55,7 +56,7 @@ class PatientHistoryScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(4.w),
                 decoration: BoxDecoration(
-                  color: Colors.pink,
+                  color: cuspink,
                   borderRadius: BorderRadius.circular(10.sp),
                 ),
                 child: Column(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/screens/addeventscreen.dart';
+import 'package:tubulert/screens/diagnoses.dart';
 import 'package:tubulert/screens/doctordetailsscreen.dart';
 import 'package:tubulert/screens/doctordetailsscreen2.dart';
 import 'package:tubulert/screens/doctordetailsscreen3.dart';
@@ -14,13 +15,12 @@ import 'package:tubulert/screens/doctors_screen.dart';
 import 'package:tubulert/screens/feedback_screen.dart';
 import 'package:tubulert/screens/help.dart';
 import 'package:tubulert/screens/homescreen.dart';
-import 'package:tubulert/screens/diagnoses.dart';
 import 'package:tubulert/screens/introduction.dart';
 import 'package:tubulert/screens/medtracaddevent.dart';
-import 'package:tubulert/screens/medtrawitevent.dart';
+import 'package:tubulert/screens/main/schedule/medication_tracking_with_event.dart';
 import 'package:tubulert/screens/onboarding/splashscreen.dart';
 import 'package:tubulert/screens/patienthistory_screen.dart';
-import 'package:tubulert/screens/profilescreen.dart';
+import 'package:tubulert/screens/main/profile/profile_screen.dart';
 import 'package:tubulert/screens/reportscreen.dart';
 
 void main() async {
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        home: IntroductionScreen(),
+        home: SplashScreen(),
       );
     });
   }

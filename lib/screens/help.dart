@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -16,7 +17,7 @@ class HelpScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -37,10 +38,10 @@ class HelpScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -59,13 +60,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'How do I use this app to detect TB?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),
@@ -78,13 +79,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'How to upload an X-Ray?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),
@@ -97,13 +98,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'How accurate is tubulert?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),
@@ -116,13 +117,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'Do I need an internet connection\nto use the app?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),
@@ -135,13 +136,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'Will my X-ray images be shared\nwith third parties?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),
@@ -154,13 +155,13 @@ class HelpScreen extends StatelessWidget {
                   Text(
                     'Can the app replace a doctors\ndiagnosis?',
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: cuspink,
                     ),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
-                    color: Colors.pink,
+                    color: cuspink,
                   ),
                 ],
               ),

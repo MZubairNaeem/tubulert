@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class DoctorsScreen extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class DoctorsScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -41,10 +42,10 @@ class DoctorsScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -129,12 +130,12 @@ class DoctorTile extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.pink,
+                      color: cuspink,
                     )),
                 Text("Pulmonologist at $hospital",
                     style: TextStyle(
                       fontSize: 17,
-                      color: Colors.pink,
+                      color: cuspink,
                     )),
                 SizedBox(height: 8.0),
                 Row(

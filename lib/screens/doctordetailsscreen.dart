@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
   const DoctorDetailsScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -42,10 +43,10 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -58,7 +59,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
             Container(
               padding: EdgeInsets.all(3.w),
               decoration: BoxDecoration(
-                color: Colors.pink,
+                color: cuspink,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -137,7 +138,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
             Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pink,
+                backgroundColor: cuspink,
                 padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -163,7 +164,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 4.w),
       decoration: BoxDecoration(
-        color: selected ? Colors.pink : Colors.grey[200],
+        color: selected ? cuspink : Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -196,7 +197,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
       decoration: BoxDecoration(
-        color: selected ? Colors.pink : Colors.grey[200],
+        color: selected ? cuspink : Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(

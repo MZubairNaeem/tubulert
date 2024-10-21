@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class IntroductionScreen extends StatefulWidget {
   const IntroductionScreen({super.key});
@@ -21,7 +22,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -48,10 +49,10 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -77,7 +78,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       'Historical Context',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],
@@ -97,7 +98,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       'Global Burden',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],

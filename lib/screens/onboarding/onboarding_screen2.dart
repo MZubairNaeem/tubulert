@@ -46,8 +46,9 @@ class Onboardingscreen2 extends StatelessWidget {
               Container(
                 height: 3.h,
                 width: 3.w,
-                decoration: const BoxDecoration(
-                  color: white,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  color: Colors.transparent,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -57,9 +58,8 @@ class Onboardingscreen2 extends StatelessWidget {
               Container(
                 height: 3.h,
                 width: 3.w,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  color: Colors.transparent,
+                decoration: const BoxDecoration(
+                  color: white,
                   shape: BoxShape.circle,
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class FeedbackScreen extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class FeedbackScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -39,10 +40,10 @@ class FeedbackScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -54,14 +55,14 @@ class FeedbackScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(3.w),
               decoration: BoxDecoration(
-                color: Colors.pink[100],
+                color: cuspink.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10.sp),
               ),
               child: Text(
                 'Send us your feedback and help us provide a better experience for you.',
                 style: TextStyle(
                   fontSize: 18.sp,
-                  color: Colors.pink,
+                  color: cuspink,
                 ),
               ),
             ),
@@ -112,7 +113,7 @@ class FeedbackScreen extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(2.h),
-                    backgroundColor: Colors.pink,
+                    backgroundColor: cuspink,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.sp),
                     ),

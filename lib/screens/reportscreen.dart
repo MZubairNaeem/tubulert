@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class ReportScreen extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class ReportScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -35,10 +36,10 @@ class ReportScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -60,12 +61,13 @@ class ReportScreen extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.pink),
+                    color: cuspink),
               ),
               SizedBox(height: 1.h),
               Text(
                 'Negative',
-                style: TextStyle(fontSize: 18.sp, color: Colors.pink.shade700),
+                style:
+                    TextStyle(fontSize: 18.sp, color: cuspink.withOpacity(0.7)),
               ),
               SizedBox(height: 2.h),
               buildInfoField("Username", "mohammadasad"),
@@ -90,18 +92,18 @@ class ReportScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontSize: 16.sp, color: Colors.pink)),
+        Text(label, style: TextStyle(fontSize: 16.sp, color: cuspink)),
         SizedBox(height: 0.5.h),
         TextFormField(
           initialValue: value,
           readOnly: true,
-          style: TextStyle(fontSize: 17.sp, color: Colors.pink),
+          style: TextStyle(fontSize: 17.sp, color: cuspink),
           decoration: InputDecoration(
             contentPadding:
                 EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.sp),
-              borderSide: BorderSide(color: Colors.pink.shade700),
+              borderSide: BorderSide(color: cuspink.withOpacity(0.7)),
             ),
           ),
         ),

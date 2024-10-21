@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class MedicationTrackingScreen1 extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class MedicationTrackingScreen1 extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -36,10 +37,10 @@ class MedicationTrackingScreen1 extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -80,7 +81,7 @@ class MedicationTrackingScreen1 extends StatelessWidget {
                         // Navigate to Add Event screen
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pink,
+                        backgroundColor: cuspink,
                         padding: EdgeInsets.symmetric(
                             vertical: 2.h, horizontal: 10.w),
                         shape: RoundedRectangleBorder(

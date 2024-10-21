@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class DiagnosesScreen extends StatefulWidget {
   const DiagnosesScreen({super.key});
@@ -21,7 +22,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -48,10 +49,10 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -77,7 +78,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
                       'Medical History',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],
@@ -97,7 +98,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
                       'Physical Examination',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],
@@ -117,7 +118,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
                       'Chest X-ray',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],
@@ -137,7 +138,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
                       'Procedure',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],
@@ -157,7 +158,7 @@ class _DiagnosesScreenState extends State<DiagnosesScreen> {
                       'Interpretation',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: cuspink,
                       ),
                     ),
                   ],

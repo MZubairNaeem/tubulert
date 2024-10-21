@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:tubulert/colors/colors.dart';
 
 class AddEventScreen extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class AddEventScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: Colors.pink,
+        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -36,10 +37,10 @@ class AddEventScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40),
-              bottomRight: Radius.circular(40),
+              bottomLeft: Radius.circular(20.sp),
+              bottomRight: Radius.circular(20.sp),
             ),
-            color: Colors.pink,
+            color: cuspink,
           ),
         ),
       ),
@@ -55,7 +56,7 @@ class AddEventScreen extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.pink),
+                    color: cuspink),
               ),
             ),
             SizedBox(height: 3.h),
@@ -89,7 +90,7 @@ class AddEventScreen extends StatelessWidget {
                   // Add event action
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink,
+                  backgroundColor: cuspink,
                   padding:
                       EdgeInsets.symmetric(vertical: 2.h, horizontal: 20.w),
                   shape: RoundedRectangleBorder(
@@ -130,7 +131,7 @@ class AddEventScreen extends StatelessWidget {
           child: Image.asset(assetPath, fit: BoxFit.contain),
         ),
         SizedBox(height: 1.h),
-        Text(label, style: TextStyle(fontSize: 15.sp, color: Colors.pink)),
+        Text(label, style: TextStyle(fontSize: 15.sp, color: cuspink)),
       ],
     );
   }
@@ -143,7 +144,7 @@ class AddEventScreen extends StatelessWidget {
         labelText,
         style: TextStyle(
           fontSize: 17.sp,
-          color: Colors.pink,
+          color: cuspink,
         ),
       ),
     );
@@ -157,13 +158,13 @@ class AddEventScreen extends StatelessWidget {
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.pink,
+              color: cuspink,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.pink,
+              color: cuspink,
             ),
           ),
         ),

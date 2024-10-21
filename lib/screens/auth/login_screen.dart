@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 import 'package:tubulert/screens/auth/forgot_password_screen.dart';
 import 'package:tubulert/screens/auth/register_screen.dart';
+import 'package:tubulert/screens/main/bottom_nav_bar.dart';
 import 'package:tubulert/screens/homescreen.dart'; // Import responsive_sizer
 
 class LoginScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       body: ListView(
         children: [
           Padding(
@@ -174,11 +175,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
+                            builder: (context) => const BottomNavBar(),
                           ),
+                          (route) => false,
                         );
                       },
                       child: isLoading
@@ -191,8 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             )
                           : Text(
                               'Login',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.sp),
+                              style: TextStyle(color: white, fontSize: 18.sp),
                             ),
                     ),
                   ),
