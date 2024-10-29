@@ -7,7 +7,7 @@ import 'package:tubulert/colors/colors.dart';
 import 'package:tubulert/screens/auth/forgot_password_screen.dart';
 import 'package:tubulert/screens/auth/register_screen.dart';
 import 'package:tubulert/screens/main/bottom_nav_bar.dart';
-import 'package:tubulert/screens/homescreen.dart'; // Import responsive_sizer
+import 'package:tubulert/screens/main/home/home_screen.dart'; // Import responsive_sizer
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
