@@ -17,47 +17,47 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.transparent,
-        toolbarHeight: 70,
-        // backgroundColor: cuspink,
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 6.w,
-                  vertical: 4.h,
-                ),
-                child: Text(
-                  'Schedule',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20.sp),
-              bottomRight: Radius.circular(20.sp),
-            ),
-            color: cuspink,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   leading: Icon(
+      //     Icons.arrow_back,
+      //     color: Colors.white,
+      //   ),
+      //   backgroundColor: Colors.transparent,
+      //   toolbarHeight: 70,
+      //   // backgroundColor: cuspink,
+      //   title: Padding(
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: [
+      //         Padding(
+      //           padding: EdgeInsets.symmetric(
+      //             horizontal: 6.w,
+      //             vertical: 4.h,
+      //           ),
+      //           child: Text(
+      //             'Schedule',
+      //             style: TextStyle(
+      //               color: Colors.white,
+      //               fontSize: 22.sp,
+      //               fontWeight: FontWeight.bold,
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      //   centerTitle: false,
+      //   flexibleSpace: Container(
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.only(
+      //         bottomLeft: Radius.circular(20.sp),
+      //         bottomRight: Radius.circular(20.sp),
+      //       ),
+      //       color: cuspink,
+      //     ),
+      //   ),
+      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
         child: Column(

@@ -21,6 +21,7 @@ import 'package:tubulert/screens/doctors_screen.dart';
 import 'package:tubulert/screens/feedback_screen.dart';
 import 'package:tubulert/screens/help.dart';
 import 'package:tubulert/screens/description_screens/introduction.dart';
+import 'package:tubulert/screens/main/guide/guide_screen.dart';
 import 'package:tubulert/screens/main/home/home_screen.dart';
 import 'package:tubulert/screens/medtracaddevent.dart';
 import 'package:tubulert/screens/main/schedule/medication_tracking_with_event.dart';

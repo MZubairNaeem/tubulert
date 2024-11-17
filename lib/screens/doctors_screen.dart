@@ -3,6 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
+import 'package:tubulert/screens/doctordetailsscreen.dart';
+import 'package:tubulert/screens/doctordetailsscreen2.dart';
+import 'package:tubulert/screens/doctordetailsscreen3.dart';
+import 'package:tubulert/screens/doctordetailsscreen4.dart';
+import 'package:tubulert/screens/doctordetailsscreen5.dart';
 
 class DoctorsScreen extends StatelessWidget {
   @override
@@ -53,40 +58,80 @@ class DoctorsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         children: [
           // Doctor tiles with different images
-          DoctorTile(
-            name: "Dr. Haris",
-            hospital: "PIMS Hospital",
-            rating: 2.5,
-            patients: 100,
-            imagePath: "lib/assets/doc1.png",
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsScreen5()),
+              );
+            },
+            child: DoctorTile(
+              name: "Dr. Haris",
+              hospital: "PIMS Hospital",
+              rating: 2.5,
+              patients: 100,
+              imagePath: "lib/assets/doc1.png",
+            ),
           ),
-          DoctorTile(
-            name: "Dr. Arham",
-            hospital: "Shafi Hospital",
-            rating: 4.0,
-            patients: 800,
-            imagePath: "lib/assets/doc2.png", // Path to the image
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsScreen4()),
+              );
+            },
+            child: DoctorTile(
+              name: "Dr. Arham",
+              hospital: "Shafi Hospital",
+              rating: 4.0,
+              patients: 800,
+              imagePath: "lib/assets/doc2.png", // Path to the image
+            ),
           ),
-          DoctorTile(
-            name: "Dr. Asad",
-            hospital: "Al-Shifa Hospital",
-            rating: 4.5,
-            patients: 900,
-            imagePath: "lib/assets/doc3.png", // Path to the image
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsScreen2()),
+              );
+            },
+            child: DoctorTile(
+              name: "Dr. Asad",
+              hospital: "Al-Shifa Hospital",
+              rating: 4.5,
+              patients: 900,
+              imagePath: "lib/assets/doc3.png", // Path to the image
+            ),
           ),
-          DoctorTile(
-            name: "Dr. Tabish",
-            hospital: "Chinar Hospital",
-            rating: 3.0,
-            patients: 300,
-            imagePath: "lib/assets/doc4.png", // Path to the image
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsScreen3()),
+              );
+            },
+            child: DoctorTile(
+              name: "Dr. Tabish",
+              hospital: "Chinar Hospital",
+              rating: 3.0,
+              patients: 300,
+              imagePath: "lib/assets/doc4.png", // Path to the image
+            ),
           ),
-          DoctorTile(
-            name: "Dr. James",
-            hospital: "Pulmonogist at Hospital",
-            rating: 3.5,
-            patients: 400,
-            imagePath: "lib/assets/doc5.png", // Path to the image
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsScreen()),
+              );
+            },
+            child: DoctorTile(
+              name: "Dr. James",
+              hospital: "Pulmonogist at Hospital",
+              rating: 3.5,
+              patients: 400,
+              imagePath: "lib/assets/doc5.png", // Path to the image
+            ),
           ),
         ],
       ),
@@ -134,7 +179,7 @@ class DoctorTile extends StatelessWidget {
                     )),
                 Text("Pulmonologist at $hospital",
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 15,
                       color: cuspink,
                     )),
                 SizedBox(height: 8.0),

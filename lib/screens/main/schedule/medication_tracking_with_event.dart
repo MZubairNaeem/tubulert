@@ -1,8 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 
-class MedicationTrackingWithEvent extends StatelessWidget {
+class MedicationTrackingWithEvent extends StatefulWidget {
+  @override
+  _MedicationTrackingWithEventState createState() =>
+      _MedicationTrackingWithEventState();
+}
+
+class _MedicationTrackingWithEventState
+    extends State<MedicationTrackingWithEvent> {
+  // Collection reference
+  final CollectionReference _medicationCollection =
+      FirebaseFirestore.instance.collection('medications');
+
+  // Method to fetch medication events from Firebase
+  Future<List<Map<String, dynamic>>> _fetchEvents() async {
+    try {
+      QuerySnapshot snapshot = await _medicationCollection.get();
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print('Error fetching medication events: $e');
+      return [];
+    }
+  }
+
+  // Method to add a new medication event to Firebase
+  Future<void> _addEvent(
+      String medicine, String dose, String time, String imagePath) async {
+    try {
+      await _medicationCollection.add({
+        'medicine': medicine,
+        'dose': dose,
+        'setTime': time,
+        'imagePath': imagePath,
+      });
+    } catch (e) {
+      print('Error adding medication event: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +53,6 @@ class MedicationTrackingWithEvent extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -44,29 +83,39 @@ class MedicationTrackingWithEvent extends StatelessWidget {
       backgroundColor: white,
       body: Padding(
         padding: EdgeInsets.all(5.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCalendar(),
-            SizedBox(height: 3.h),
-            _buildEventCard(
-                'Isoniazid', '1 pill', '4:30 am', 'lib/assets/image 4.png'),
-            SizedBox(height: 2.h),
-            _buildEventCard(
-                'Rifampicin', '2 pills', '4:30 am', 'lib/assets/Pills.png'),
-            SizedBox(height: 2.h),
-            _buildEventCard('Pyrazinamide', '1 teaspoon', '4:30 am',
-                'lib/assets/image 3.png'),
-            SizedBox(height: 2.h),
-            _buildEventCard(
-                'Ethambutol', '2 pills', '4:30 am', 'lib/assets/Pills.png'),
-          ],
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: _fetchEvents(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No Events Added Yet!'));
+            }
+
+            List<Map<String, dynamic>> events = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                var event = events[index];
+                return _buildEventCard(
+                  event['medicine'],
+                  event['dose'],
+                  event['setTime'],
+                  event['imagePath'],
+                );
+              },
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
         splashColor: cuspink,
         onPressed: () {
-          // Add new event
+          // Add new event on button press
+          _showAddEventDialog();
         },
         backgroundColor: cuspink,
         child: Icon(
@@ -78,51 +127,60 @@ class MedicationTrackingWithEvent extends StatelessWidget {
     );
   }
 
-  // Calendar row at the top
-  Widget _buildCalendar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildCalendarDay('Mon', '1'),
-        _buildCalendarDay('Tue', '2'),
-        _buildCalendarDay('Wed', '3'),
-        _buildCalendarDay('Thu', '4'),
-        _buildCalendarDay('Fri', '5', isSelected: true),
-        _buildCalendarDay('Sat', '6'),
-        _buildCalendarDay('Sun', '7'),
-      ],
-    );
-  }
+  // Method to show dialog for adding new event
+  void _showAddEventDialog() {
+    final TextEditingController medicineController = TextEditingController();
+    final TextEditingController doseController = TextEditingController();
+    final TextEditingController timeController = TextEditingController();
 
-  // Helper widget for Calendar Day
-  Widget _buildCalendarDay(String day, String date, {bool isSelected = false}) {
-    return Column(
-      children: [
-        Text(
-          day,
-          style: TextStyle(
-            fontSize: 15.sp,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? cuspink : cuspink,
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add Medication Event'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: medicineController,
+                decoration: InputDecoration(labelText: 'Medicine Name'),
+              ),
+              TextField(
+                controller: doseController,
+                decoration: InputDecoration(labelText: 'Dose'),
+              ),
+              TextField(
+                controller: timeController,
+                decoration: InputDecoration(labelText: 'Time'),
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 1.h),
-        Container(
-          padding: EdgeInsets.all(1.w),
-          decoration: BoxDecoration(
-            color: isSelected ? cuspink : Colors.transparent,
-            shape: BoxShape.circle,
-          ),
-          child: Text(
-            date,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected ? white : cuspink,
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
             ),
-          ),
-        ),
-      ],
+            TextButton(
+              onPressed: () {
+                String medicine = medicineController.text.trim();
+                String dose = doseController.text.trim();
+                String time = timeController.text.trim();
+                String imagePath = 'lib/assets/Pills.png'; // Default image path
+
+                if (medicine.isNotEmpty && dose.isNotEmpty && time.isNotEmpty) {
+                  _addEvent(medicine, dose, time, imagePath);
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Add Event'),
+            ),
+          ],
+        );
+      },
     );
   }
 

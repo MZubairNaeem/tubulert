@@ -10,52 +10,52 @@ class UploadXrayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        toolbarHeight: 70,
-        // backgroundColor: cuspink,
-        title: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 3.w,
-            vertical: 1.h,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Your personal',
-                style: TextStyle(
-                  color: white,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              Text(
-                'AI TB detector',
-                style: TextStyle(
-                  color: white,
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20.sp),
-              bottomRight: Radius.circular(20.sp),
-            ),
-            color: cuspink,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   toolbarHeight: 70,
+      //   // backgroundColor: cuspink,
+      //   title: Padding(
+      //     padding: EdgeInsets.symmetric(
+      //       horizontal: 3.w,
+      //       vertical: 1.h,
+      //     ),
+      //     child: Column(
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: [
+      //         Text(
+      //           'Your personal',
+      //           style: TextStyle(
+      //             color: white,
+      //             fontSize: 20.sp,
+      //             fontWeight: FontWeight.normal,
+      //           ),
+      //         ),
+      //         Text(
+      //           'AI TB detector',
+      //           style: TextStyle(
+      //             color: white,
+      //             fontSize: 22.sp,
+      //             fontWeight: FontWeight.bold,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      //   centerTitle: false,
+      //   flexibleSpace: Container(
+      //     decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.only(
+      //         bottomLeft: Radius.circular(20.sp),
+      //         bottomRight: Radius.circular(20.sp),
+      //       ),
+      //       color: cuspink,
+      //     ),
+      //   ),
+      // ),
       body: Center(
           child: Container(
         width: 80.w,
-        height: 40.h,
+        height: 50.h,
         decoration: BoxDecoration(
           color: white,
           borderRadius: BorderRadius.circular(15.sp),

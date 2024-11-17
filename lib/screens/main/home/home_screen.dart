@@ -1,8 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
+import 'package:tubulert/screens/Schedule/complete_schedule_screen.dart';
+import 'package:tubulert/screens/doctors_screen.dart';
+import 'package:tubulert/screens/feedback_screen.dart';
+import 'package:tubulert/screens/help.dart';
+import 'package:tubulert/screens/main/diagnoses/upload_xray_screen.dart';
+import 'package:tubulert/screens/main/guide/guide_screen.dart';
+import 'package:tubulert/screens/medtracaddevent.dart';
+import 'package:tubulert/screens/patienthistory_screen.dart';
+import 'package:tubulert/screens/main/profile/profile_screen.dart';
+import 'package:tubulert/screens/main/schedule/medication_tracking_with_event.dart';
+//import 'package:tubulert/screens/schedule_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController =
+        TabController(length: 5, vsync: this); // Updated length to 5
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +88,10 @@ class HomeScreen extends StatelessWidget {
                   bottomRight: Radius.circular(20.sp),
                 ),
               ),
-              accountName: Text('Mohammad Asad', style: TextStyle(color: Colors.white)),
-              accountEmail: Text('masadejaz@gmail.com', style: TextStyle(color: Colors.white)),
+              accountName:
+                  Text('Mohammad Asad', style: TextStyle(color: Colors.white)),
+              accountEmail: Text('masadejaz@gmail.com',
+                  style: TextStyle(color: Colors.white)),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person, size: 50, color: cuspink),
@@ -67,117 +101,180 @@ class HomeScreen extends StatelessWidget {
               leading: Icon(Icons.history, color: cuspink),
               title: Text('Patient History'),
               onTap: () {
-                // Handle patient history navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PatientHistoryScreen()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.library_books, color: cuspink),
               title: Text('Guide & Tips'),
               onTap: () {
-                // Handle guide and tips navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GuideScreen()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.star, color: cuspink),
               title: Text('Feedback'),
               onTap: () {
-                // Handle feedback navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FeedbackScreen()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.help, color: cuspink),
               title: Text('Help'),
               onTap: () {
-                // Handle help navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HelpScreen()),
+                );
               },
             ),
             Spacer(),
             ListTile(
               leading: Icon(Icons.settings, color: cuspink),
               title: Text('Settings'),
-              onTap: () {
-                // Handle settings navigation
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: Icon(Icons.logout, color: cuspink),
               title: Text('Log Out'),
-              onTap: () {
-                // Handle logout
-              },
+              onTap: () {},
             ),
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 4.h),
-            Center(
-              child: Image.asset(
-                'lib/assets/Rectangle 7.png',
-                height: 20.h,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                maximumSize: Size(90.h, 6.h),
-                backgroundColor: cuspink,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.sp),
-                ),
-              ),
-              onPressed: () {
-                // Define action on button press
-              },
-              child: Text(
-                'Diagnose through X-Ray',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  color: white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 4.h),
-            buildCard(
-              context,
-              'Specialist Doctors',
-              'lib/assets/Group 24 (1).png',
-              () {},
-            ),
-            SizedBox(height: 4.h),
-            buildCard(
-              context,
-              'Medication Tracking',
-              'lib/assets/Group 23.png',
-              () {
-                // Handle medication tracking navigation
-              },
-            ),
-            SizedBox(height: 2.h),
-            buildCard(
-              context,
-              'Medical History',
-              'lib/assets/Group 21.png',
-              () {
-                // Handle medical history navigation
-              },
-            ),
-            SizedBox(height: 2.h),
-          ],
-        ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          buildMainContent(context),
+          ProfileScreen(),
+          UploadXrayScreen(),
+          ScheduleScreen(), // Updated navigation to ScheduleScreen
+          Container(), // Empty screen for Menu Icon
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabController.index,
+        onTap: (index) {
+          setState(() {
+            _tabController.index = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: cuspink),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, color: cuspink),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt, color: cuspink),
+            label: 'Diagnose',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today, color: cuspink),
+            label: 'Schedule',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu, color: cuspink),
+            label: 'Menu',
+          ),
+        ],
       ),
     );
   }
 
-  Widget buildCard(
-    BuildContext context,
-    String title,
-    String assetPath,
-    VoidCallback onTap,
-  ) {
+  Widget buildMainContent(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 4.h),
+          Center(
+            child: Image.asset(
+              'lib/assets/Rectangle 7.png',
+              height: 20.h,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              maximumSize: Size(90.h, 6.h),
+              backgroundColor: cuspink,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.sp),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UploadXrayScreen()),
+              );
+            },
+            child: Text(
+              'Diagnose through X-Ray',
+              style: TextStyle(
+                fontSize: 18.sp,
+                color: white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(height: 4.h),
+          buildCard(
+            context,
+            'Specialist Doctors',
+            'lib/assets/Group 24 (1).png',
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorsScreen()),
+              );
+            },
+          ),
+          SizedBox(height: 4.h),
+          buildCard(
+            context,
+            'Medication Tracking',
+            'lib/assets/Group 23.png',
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MedicationTrackingWithEvent()),
+              );
+            },
+          ),
+          SizedBox(height: 4.h),
+          buildCard(
+            context,
+            'Medical History',
+            'lib/assets/Group 21.png',
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PatientHistoryScreen()),
+              );
+            },
+          ),
+          SizedBox(height: 2.h),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCard(BuildContext context, String title, String assetPath,
+      VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

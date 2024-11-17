@@ -1,10 +1,49 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
+import 'package:tubulert/screens/main/schedule/medication_tracking_with_event.dart';
 
-class AddEventScreen extends StatelessWidget {
+class AddEventScreen extends StatefulWidget {
+  @override
+  _AddEventScreenState createState() => _AddEventScreenState();
+}
+
+class _AddEventScreenState extends State<AddEventScreen> {
+  final TextEditingController medicineController = TextEditingController();
+  final TextEditingController doseController = TextEditingController();
+  final TextEditingController setTimeController = TextEditingController();
+
+  void addEvent() async {
+    String medicine = medicineController.text;
+    String dose = doseController.text;
+    String setTime = setTimeController.text;
+
+    // Validate the inputs
+    if (medicine.isEmpty || dose.isEmpty || setTime.isEmpty) {
+      // Show error message
+      return;
+    }
+
+    // Add the event to Firestore
+    await FirebaseFirestore.instance.collection('events').add({
+      'medicine': medicine,
+      'dose': dose,
+      'setTime': setTime,
+      'createdAt': Timestamp.now(),
+    });
+
+    // Clear the text fields
+    medicineController.clear();
+    doseController.clear();
+    setTimeController.clear();
+
+    // Show confirmation or navigate
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Event Added Successfully!')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +55,6 @@ class AddEventScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -70,25 +108,19 @@ class AddEventScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 7.h,
-            ),
-            // Text fields with labels (Medicine Name, Dose, Set Time)
+            SizedBox(height: 7.h),
             _buildLabel('Medicine Name'),
-            _buildTextField(),
+            _buildTextField(medicineController),
             SizedBox(height: 2.h),
             _buildLabel('Dose'),
-            _buildTextField(),
+            _buildTextField(doseController),
             SizedBox(height: 2.h),
             _buildLabel('Set Time'),
-            _buildTextField(),
+            _buildTextField(setTimeController),
             SizedBox(height: 4.h),
-
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // Add event action
-                },
+                onPressed: addEvent,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: cuspink,
                   padding:
@@ -97,9 +129,18 @@ class AddEventScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: Text(
-                  'Add',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MedicationTrackingWithEvent()),
+                    );
+                  },
+                  child: Text(
+                    'Add',
+                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -109,7 +150,6 @@ class AddEventScreen extends StatelessWidget {
     );
   }
 
-  // Helper Widget for Icon Buttons
   Widget _buildIconButton(String assetPath, String label) {
     return Column(
       children: [
@@ -136,7 +176,6 @@ class AddEventScreen extends StatelessWidget {
     );
   }
 
-  // Helper widget for Label
   Widget _buildLabel(String labelText) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -150,11 +189,11 @@ class AddEventScreen extends StatelessWidget {
     );
   }
 
-  // Helper widget for TextField (simple text input)
-  Widget _buildTextField() {
+  Widget _buildTextField(TextEditingController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 2.w),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide(

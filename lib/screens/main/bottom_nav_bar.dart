@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
+import 'package:tubulert/screens/Schedule/complete_schedule_screen.dart';
 import 'package:tubulert/screens/main/diagnoses/upload_xray_screen.dart';
 import 'package:tubulert/screens/main/home/home_screen.dart';
 import 'package:tubulert/screens/main/profile/profile_screen.dart';
 import 'package:tubulert/screens/main/schedule/medication_tracking_with_event.dart';
+import 'package:tubulert/screens/reportscreen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -44,9 +46,10 @@ class _BottomNavBarState extends State<BottomNavBar>
         children: [
           HomeScreen(),
           ProfileScreen(),
-          const UploadXrayScreen(),
-          MedicationTrackingWithEvent(),
-          HomeScreen(),
+          UploadXrayScreen(),
+          ReportScreen(),
+          ScheduleScreen(),
+          //HomeScreen(),
         ],
       ),
       bottomNavigationBar: Container(
