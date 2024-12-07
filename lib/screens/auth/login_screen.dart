@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final TextEditingController _emailController = TextEditingController();
 
@@ -148,11 +148,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           isLoading = false;
                         });
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(),
                           ),
+                          (route) => false,
                         );
                       } on FirebaseAuthException catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -173,29 +174,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.symmetric(
                           vertical: 2.5.h), // Button padding
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const BottomNavBar(),
-                          ),
-                          (route) => false,
-                        );
-                      },
-                      child: isLoading
-                          ? SizedBox(
-                              width: 6.w,
-                              height: 6.w,
-                              child: const CircularProgressIndicator(
-                                color: white,
-                              ),
-                            )
-                          : Text(
-                              'Login',
-                              style: TextStyle(color: white, fontSize: 18.sp),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 6.w,
+                            height: 6.w,
+                            child: const CircularProgressIndicator(
+                              color: white,
                             ),
-                    ),
+                          )
+                        : Text(
+                            'Login',
+                            style: TextStyle(color: white, fontSize: 18.sp),
+                          ),
                   ),
                   SizedBox(height: 10.h), // Spacing before bottom text
                   TextButton(

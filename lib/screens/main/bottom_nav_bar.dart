@@ -45,10 +45,8 @@ class _BottomNavBarState extends State<BottomNavBar>
         controller: _tabController,
         children: [
           HomeScreen(),
-          ProfileScreen(),
           UploadXrayScreen(),
           ReportScreen(),
-          ScheduleScreen(),
           //HomeScreen(),
         ],
       ),

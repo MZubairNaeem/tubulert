@@ -1,23 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 import 'package:tubulert/screens/doctordetailsscreen.dart';
-import 'package:tubulert/screens/doctordetailsscreen2.dart';
-import 'package:tubulert/screens/doctordetailsscreen3.dart';
-import 'package:tubulert/screens/doctordetailsscreen4.dart';
-import 'package:tubulert/screens/doctordetailsscreen5.dart';
 
-class DoctorsScreen extends StatelessWidget {
+class DoctorsScreen extends StatefulWidget {
+  @override
+  State<DoctorsScreen> createState() => _DoctorsScreenState();
+}
+
+class _DoctorsScreenState extends State<DoctorsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         // backgroundColor: cuspink,
@@ -54,86 +53,84 @@ class DoctorsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          // Doctor tiles with different images
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsScreen5()),
-              );
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .where('userType', isEqualTo: 'Doctor')
+            .get(),
+        builder: (context, snapshot) {
+          // Check if the snapshot is loading
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          // Check if there's an error
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          // If no data is found
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No doctors found.'));
+          }
+
+          // If data is available, build the ListView
+          final doctorList = snapshot.data!.docs;
+
+          return ListView.builder(
+            padding: EdgeInsets.all(16.0),
+            itemCount: doctorList.length, // Number of doctors in the list
+            itemBuilder: (context, index) {
+              final doctorData = doctorList[index].data();
+
+              // Use the data for each doctor to populate the tiles
+              return FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('appoinments')
+                      .where('did', isEqualTo: doctorList[index].id)
+                      .get(),
+                  builder: (context, snapshot) {
+                    // Check if the snapshot is loading
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    // Check if there's an error
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    if (snapshot.hasData) {
+                      final appointmentCount = snapshot.data!.docs.length;
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DoctorDetailsScreen(
+                                data: doctorData,
+                                appointmentCount: appointmentCount,
+                                did: doctorList[index].id,
+                              ),
+                            ),
+                          );
+                        },
+                        child: DoctorTile(
+                          patients: appointmentCount, // Example of data usage
+                          name: doctorData['fullName'] ??
+                              'Dr. Unknown', // Replace with actual data field
+                          hospital: doctorData['hospital'] ??
+                              'Unknown Hospital', // Replace with actual field
+                          imagePath:
+                              "lib/assets/doc1.png", // Default image if none
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  });
             },
-            child: DoctorTile(
-              name: "Dr. Haris",
-              hospital: "PIMS Hospital",
-              rating: 2.5,
-              patients: 100,
-              imagePath: "lib/assets/doc1.png",
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsScreen4()),
-              );
-            },
-            child: DoctorTile(
-              name: "Dr. Arham",
-              hospital: "Shafi Hospital",
-              rating: 4.0,
-              patients: 800,
-              imagePath: "lib/assets/doc2.png", // Path to the image
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsScreen2()),
-              );
-            },
-            child: DoctorTile(
-              name: "Dr. Asad",
-              hospital: "Al-Shifa Hospital",
-              rating: 4.5,
-              patients: 900,
-              imagePath: "lib/assets/doc3.png", // Path to the image
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsScreen3()),
-              );
-            },
-            child: DoctorTile(
-              name: "Dr. Tabish",
-              hospital: "Chinar Hospital",
-              rating: 3.0,
-              patients: 300,
-              imagePath: "lib/assets/doc4.png", // Path to the image
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsScreen()),
-              );
-            },
-            child: DoctorTile(
-              name: "Dr. James",
-              hospital: "Pulmonogist at Hospital",
-              rating: 3.5,
-              patients: 400,
-              imagePath: "lib/assets/doc5.png", // Path to the image
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -142,14 +139,12 @@ class DoctorsScreen extends StatelessWidget {
 class DoctorTile extends StatelessWidget {
   final String name;
   final String hospital;
-  final double rating;
   final int patients;
   final String imagePath; // Variable for image path
 
   DoctorTile({
     required this.name,
     required this.hospital,
-    required this.rating,
     required this.patients,
     required this.imagePath,
   });
@@ -185,10 +180,7 @@ class DoctorTile extends StatelessWidget {
                 SizedBox(height: 8.0),
                 Row(
                   children: [
-                    Icon(Icons.star, color: Colors.amber, size: 18),
                     SizedBox(width: 8.0),
-                    Text("$rating", style: TextStyle(fontSize: 16)),
-                    SizedBox(width: 20.0),
                     Icon(Icons.people, size: 16),
                     SizedBox(width: 4.0),
                     Text("$patients+ Patients", style: TextStyle(fontSize: 16)),

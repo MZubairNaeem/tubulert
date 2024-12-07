@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 import 'package:tubulert/screens/Schedule/complete_schedule_screen.dart';
+import 'package:tubulert/screens/auth/login_screen.dart';
 import 'package:tubulert/screens/doctors_screen.dart';
 import 'package:tubulert/screens/feedback_screen.dart';
 import 'package:tubulert/screens/help.dart';
@@ -26,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: 5, vsync: this); // Updated length to 5
+        TabController(length: 3, vsync: this); // Updated length to 5
   }
 
   @override
@@ -40,6 +42,27 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ProfileScreen(),
+                    ));
+              },
+              icon: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius:
+                      BorderRadius.circular(12), // Adjust the radius as needed
+                ),
+                padding: const EdgeInsets.all(4),
+                child: const Icon(
+                  Icons.person,
+                ),
+              ))
+        ],
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         title: Padding(
@@ -147,7 +170,14 @@ class _HomeScreenState extends State<HomeScreen>
             ListTile(
               leading: Icon(Icons.logout, color: cuspink),
               title: Text('Log Out'),
-              onTap: () {},
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
             ),
           ],
         ),
@@ -156,10 +186,8 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _tabController,
         children: [
           buildMainContent(context),
-          ProfileScreen(),
-          UploadXrayScreen(),
-          ScheduleScreen(), // Updated navigation to ScheduleScreen
-          Container(), // Empty screen for Menu Icon
+          const UploadXrayScreen(),
+          const ScheduleScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -169,14 +197,10 @@ class _HomeScreenState extends State<HomeScreen>
             _tabController.index = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: cuspink),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: cuspink),
-            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.camera_alt, color: cuspink),
@@ -185,10 +209,6 @@ class _HomeScreenState extends State<HomeScreen>
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today, color: cuspink),
             label: 'Schedule',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu, color: cuspink),
-            label: 'Menu',
           ),
         ],
       ),
@@ -218,7 +238,8 @@ class _HomeScreenState extends State<HomeScreen>
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UploadXrayScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const UploadXrayScreen()),
               );
             },
             child: Text(

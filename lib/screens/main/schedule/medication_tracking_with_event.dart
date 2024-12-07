@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
@@ -29,17 +30,22 @@ class _MedicationTrackingWithEventState
   }
 
   // Method to add a new medication event to Firebase
-  Future<void> _addEvent(
-      String medicine, String dose, String time, String imagePath) async {
+  Future<void> _addEvent(String medicine, String dose, String time,
+      String imagePath, String type) async {
     try {
       await _medicationCollection.add({
         'medicine': medicine,
         'dose': dose,
-        'setTime': time,
+        'time': time,
         'imagePath': imagePath,
+        'type': type,
+        'uid': FirebaseAuth.instance.currentUser!.uid,
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Med added successfully')),
+      );
     } catch (e) {
-      print('Error adding medication event: $e');
+      SnackBar(content: Text(e.toString()));
     }
   }
 
@@ -47,10 +53,6 @@ class _MedicationTrackingWithEventState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         title: Padding(
@@ -103,8 +105,9 @@ class _MedicationTrackingWithEventState
                 return _buildEventCard(
                   event['medicine'],
                   event['dose'],
-                  event['setTime'],
+                  event['time'],
                   event['imagePath'],
+                  event['type'],
                 );
               },
             );
@@ -132,34 +135,65 @@ class _MedicationTrackingWithEventState
     final TextEditingController medicineController = TextEditingController();
     final TextEditingController doseController = TextEditingController();
     final TextEditingController timeController = TextEditingController();
+    String selectedMedType = 'Tablet'; // Holds the selected medication type
+    final List<String> medTypes = [
+      'Tablet',
+      'Syrup',
+      'Injection',
+      'Capsule'
+    ]; // Medication types
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Add Medication Event'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: medicineController,
-                decoration: InputDecoration(labelText: 'Medicine Name'),
-              ),
-              TextField(
-                controller: doseController,
-                decoration: InputDecoration(labelText: 'Dose'),
-              ),
-              TextField(
-                controller: timeController,
-                decoration: InputDecoration(labelText: 'Time'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: medicineController,
+                  decoration: InputDecoration(labelText: 'Medicine Name'),
+                ),
+                TextField(
+                  controller: doseController,
+                  decoration: InputDecoration(labelText: 'Dose'),
+                ),
+                TextField(
+                  controller: timeController,
+                  decoration: InputDecoration(labelText: 'Time'),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Select Medication Type',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                DropdownButtonFormField<String>(
+                  value: selectedMedType,
+                  items: medTypes.map((String type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    selectedMedType =
+                        newValue!; // Update the selected medication type
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  hint: Text('Select Type'),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                // Close the dialog
                 Navigator.pop(context);
               },
               child: Text('Cancel'),
@@ -172,8 +206,13 @@ class _MedicationTrackingWithEventState
                 String imagePath = 'lib/assets/Pills.png'; // Default image path
 
                 if (medicine.isNotEmpty && dose.isNotEmpty && time.isNotEmpty) {
-                  _addEvent(medicine, dose, time, imagePath);
+                  _addEvent(medicine, dose, time, imagePath, selectedMedType);
                   Navigator.pop(context);
+                } else {
+                  // Show an error if inputs are missing
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please fill all fields')),
+                  );
                 }
               },
               child: Text('Add Event'),
@@ -185,9 +224,10 @@ class _MedicationTrackingWithEventState
   }
 
   // Helper widget for Event Card
-  Widget _buildEventCard(
-      String medicine, String dose, String time, String assetPath) {
+  Widget _buildEventCard(String medicine, String dose, String time,
+      String assetPath, String type) {
     return Container(
+      padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: white,
@@ -203,12 +243,9 @@ class _MedicationTrackingWithEventState
         leading: Image.asset(assetPath, height: 8.h, fit: BoxFit.contain),
         title:
             Text(medicine, style: TextStyle(fontSize: 16.sp, color: cuspink)),
-        subtitle: Text('$dose - $time',
+        subtitle: Text('Dose $dose - Med Time $time',
             style: TextStyle(fontSize: 14.sp, color: cuspink)),
-        trailing: Icon(
-          Icons.more_vert,
-          color: cuspink,
-        ),
+        trailing: Text(type),
       ),
     );
   }

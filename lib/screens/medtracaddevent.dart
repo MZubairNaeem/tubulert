@@ -28,7 +28,7 @@ class _MedicationTrackingScreen1State extends State<MedicationTrackingScreen1> {
   void _loadEvents() async {
     if (_user != null) {
       final userEvents = await _firestore
-          .collection('events')
+          .collection('medications')
           .where('userId', isEqualTo: _user!.uid)
           .get();
 
@@ -41,7 +41,7 @@ class _MedicationTrackingScreen1State extends State<MedicationTrackingScreen1> {
   // Add event to Firestore
   void _addEvent(String eventName) async {
     if (_user != null) {
-      await _firestore.collection('events').add({
+      await _firestore.collection('medications').add({
         'name': eventName,
         'date': DateTime.now(),
         'userId': _user!.uid,
@@ -56,10 +56,6 @@ class _MedicationTrackingScreen1State extends State<MedicationTrackingScreen1> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         title: Padding(

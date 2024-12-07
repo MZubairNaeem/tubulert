@@ -16,10 +16,6 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         // backgroundColor: cuspink,

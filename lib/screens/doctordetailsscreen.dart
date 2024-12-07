@@ -1,28 +1,66 @@
-// ignore_for_file: prefer_const_constructors, use_super_parameters
+// ignore_for_file: use_super_parameters, avoid_print, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
-  const DoctorDetailsScreen({Key? key}) : super(key: key);
+  final String did;
+  Map<String, dynamic> data;
+  final int appointmentCount;
+  DoctorDetailsScreen(
+      {Key? key,
+      required this.data,
+      required this.appointmentCount,
+      required this.did})
+      : super(key: key);
 
   @override
   State<DoctorDetailsScreen> createState() => _DoctorDetailsScreenState();
 }
 
 class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+
+  // Function to pick date
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  // Function to pick time
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime ?? TimeOfDay.now(),
+    );
+
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
-        // backgroundColor: cuspink,
         title: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -69,38 +107,41 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                   CircleAvatar(
                     radius: 6.h,
                     backgroundImage: AssetImage(
-                        'lib/assets/dr.png'), // Replace with actual image URL
+                      'lib/assets/doc1.png',
+                    ), // Use actual doctor profile image URL
                   ),
                   SizedBox(width: 4.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Dr. James', // Dynamic name
+                        Text(widget.data['fullName'],
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17.sp,
                                 fontWeight: FontWeight.bold)),
-                        Text('Pulmonologist',
+                        Text('Pulmonogist',
                             style: TextStyle(
                                 color: Colors.white, fontSize: 15.sp)),
-                        SizedBox(height: 1.h),
                         Row(
                           children: [
-                            Icon(Icons.star, color: Colors.yellow, size: 3.h),
-                            SizedBox(width: 1.w),
-                            Text('4.5',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15.sp)),
-                            SizedBox(width: 1.w),
-                            Text('500+ Patients',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15.sp)),
+                            Icon(
+                              Icons.people,
+                              size: 16,
+                              color: white,
+                            ),
+                            SizedBox(width: 4.0),
+                            Text(
+                              "${widget.appointmentCount}+ Patients",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: white,
+                              ),
+                            ),
                           ],
                         ),
-                        SizedBox(height: 1.h),
                         Text(
-                          'Dr. James is an exceptional pulmonogist whose dedication to his patients is unparalleled. With a blend of expertise and empathy, she listens intently to her patients concerns, ensuring they feel heard and understood. Dr. James diagnostic acumen is remarkable, allowing her to accurately identify and treat a wide range of respiratory conditions. ',
+                          "Dr. ${widget.data['fullName']} is an exceptional pulmonogist whose dedication to his patients is unparalleled. With a blend of expertise and empathy, she listens intently to her patients' concerns, ensuring they feel heard and understood. Dr. James diagnostic acumen is remarkable, allowing her to accurately identify and treat a wide range of respiratory conditions. ",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.sp,
@@ -113,28 +154,44 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
               ),
             ),
             SizedBox(height: 3.h),
-            Text(
-              'Availability',
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                availabilityButton('Tue 23', false),
-                availabilityButton('Wed 24', true),
-                availabilityButton('Thur 25', false),
-                availabilityButton('Fri 26', false),
-                availabilityButton('Sat 27', false),
+                Row(
+                  children: [
+                    Text(
+                      'Select Date',
+                      style: TextStyle(
+                          fontSize: 17.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10.h),
+                    ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      child: Text(_selectedDate == null
+                          ? 'Pick a Date'
+                          : '${_selectedDate!.toLocal()}'.split(' ')[0]),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Row(
+                  children: [
+                    Text(
+                      'Select Time',
+                      style: TextStyle(
+                          fontSize: 17.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 10.h),
+                    ElevatedButton(
+                      onPressed: () => _selectTime(context),
+                      child: Text(_selectedTime == null
+                          ? 'Pick a Time'
+                          : _selectedTime!.format(context)),
+                    ),
+                  ],
+                ),
               ],
             ),
-            SizedBox(height: 4.h),
-            Text(
-              'Select Time',
-              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2.h),
-            timeSelectionWidget(),
             Spacer(),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -144,7 +201,41 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (_selectedDate != null && _selectedTime != null) {
+                  // Combine the date and time
+                  DateTime combinedDateTime = DateTime(
+                    _selectedDate!.year,
+                    _selectedDate!.month,
+                    _selectedDate!.day,
+                    _selectedTime!.hour,
+                    _selectedTime!.minute,
+                  );
+
+                  // Convert to Firestore Timestamp
+                  Timestamp timestamp = Timestamp.fromDate(combinedDateTime);
+
+                  // Insert into Firestore
+                  FirebaseFirestore.instance.collection('appoinments').add({
+                    'time': timestamp,
+                    'pid': FirebaseAuth.instance.currentUser!.uid,
+                    'did': widget.did,
+                    'status': 'Pending',
+                  });
+
+                  // Show confirmation
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text('Appointment scheduled successfully')),
+                  );
+                  Navigator.pop(context);
+                } else {
+                  // Handle missing date or time selection
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please select both date and time')),
+                  );
+                }
+              }, // Calls bookAppointment function
               child: Center(
                 child: Text(
                   'Make an Appointment',
@@ -155,55 +246,6 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
             SizedBox(height: 2.h),
           ],
         ),
-      ),
-    );
-  }
-
-  // Helper function to create availability buttons
-  Widget availabilityButton(String day, bool selected) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 4.w),
-      decoration: BoxDecoration(
-        color: selected ? cuspink : Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        day,
-        style: TextStyle(
-            color: selected ? Colors.white : Colors.black, fontSize: 14.sp),
-      ),
-    );
-  }
-
-  // Widget for time selection
-  Widget timeSelectionWidget() {
-    return Wrap(
-      spacing: 3.w,
-      runSpacing: 1.5.h,
-      children: [
-        timeButton('06:00', false),
-        timeButton('07:00', true),
-        timeButton('08:00', false),
-        timeButton('09:00', false),
-        timeButton('10:00', false),
-        timeButton('11:00', false),
-        timeButton('12:00', false),
-      ],
-    );
-  }
-
-  // Helper function to create time buttons
-  Widget timeButton(String time, bool selected) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
-      decoration: BoxDecoration(
-        color: selected ? cuspink : Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        time,
-        style: TextStyle(
-            color: selected ? Colors.white : Colors.black, fontSize: 14.sp),
       ),
     );
   }

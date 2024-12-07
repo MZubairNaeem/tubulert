@@ -49,10 +49,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
         backgroundColor: Colors.transparent,
         toolbarHeight: 70,
         title: Padding(

@@ -1,10 +1,67 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 
-class UploadXrayScreen extends StatelessWidget {
+class UploadXrayScreen extends StatefulWidget {
   const UploadXrayScreen({super.key});
+
+  @override
+  State<UploadXrayScreen> createState() => _UploadXrayScreenState();
+}
+
+class _UploadXrayScreenState extends State<UploadXrayScreen> {
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+
+    if (image != null) {
+      // You can use the image here (e.g., upload or display)
+      print('Picked image: ${image.path}');
+    }
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 1.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  _pickImage(ImageSource.camera); // Open camera
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () {
+                  _pickImage(ImageSource.gallery); // Open gallery
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.cancel),
+                title: const Text('Cancel'),
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,32 +70,15 @@ class UploadXrayScreen extends StatelessWidget {
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
       //   toolbarHeight: 70,
-      //   // backgroundColor: cuspink,
       //   title: Padding(
-      //     padding: EdgeInsets.symmetric(
-      //       horizontal: 3.w,
-      //       vertical: 1.h,
-      //     ),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Text(
-      //           'Your personal',
-      //           style: TextStyle(
-      //             color: white,
-      //             fontSize: 20.sp,
-      //             fontWeight: FontWeight.normal,
-      //           ),
-      //         ),
-      //         Text(
-      //           'AI TB detector',
-      //           style: TextStyle(
-      //             color: white,
-      //             fontSize: 22.sp,
-      //             fontWeight: FontWeight.bold,
-      //           ),
-      //         ),
-      //       ],
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Text(
+      //       'X-Ray Diagnoses',
+      //       style: TextStyle(
+      //         color: white,
+      //         fontSize: 20.sp,
+      //         fontWeight: FontWeight.normal,
+      //       ),
       //     ),
       //   ),
       //   centerTitle: false,
@@ -97,9 +137,7 @@ class UploadXrayScreen extends StatelessWidget {
 
             // Pink upload button
             ElevatedButton(
-              onPressed: () {
-                // Add your upload logic here
-              },
+              onPressed: _showBottomSheet,
               style: ElevatedButton.styleFrom(
                 backgroundColor: cuspink, // Background color
                 padding: EdgeInsets.symmetric(

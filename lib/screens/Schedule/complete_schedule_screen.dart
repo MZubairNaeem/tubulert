@@ -1,5 +1,9 @@
-// ignore_for_file: prefer_const_constructors, use_super_parameters, library_private_types_in_public_api
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api, prefer_const_constructors
 
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
@@ -12,52 +16,13 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  int selectedTab = 0; // 0 for Upcoming, 1 for Completed, 2 for Cancelled
+  int selectedTab = 0;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: Icon(
-      //     Icons.arrow_back,
-      //     color: Colors.white,
-      //   ),
-      //   backgroundColor: Colors.transparent,
-      //   toolbarHeight: 70,
-      //   // backgroundColor: cuspink,
-      //   title: Padding(
-      //     padding: const EdgeInsets.all(8.0),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Padding(
-      //           padding: EdgeInsets.symmetric(
-      //             horizontal: 6.w,
-      //             vertical: 4.h,
-      //           ),
-      //           child: Text(
-      //             'Schedule',
-      //             style: TextStyle(
-      //               color: Colors.white,
-      //               fontSize: 22.sp,
-      //               fontWeight: FontWeight.bold,
-      //             ),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      //   centerTitle: false,
-      //   flexibleSpace: Container(
-      //     decoration: BoxDecoration(
-      //       borderRadius: BorderRadius.only(
-      //         bottomLeft: Radius.circular(20.sp),
-      //         bottomRight: Radius.circular(20.sp),
-      //       ),
-      //       color: cuspink,
-      //     ),
-      //   ),
-      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
         child: Column(
@@ -77,10 +42,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             // Tab content
             Expanded(
               child: selectedTab == 0
-                  ? _buildUpcomingList()
+                  ? _buildAppointmentsList('Pending')
                   : selectedTab == 1
-                      ? _buildCompletedList()
-                      : _buildCancelledList(),
+                      ? _buildAppointmentsList('Approved')
+                      : _buildAppointmentsList('Rejected'),
             ),
           ],
         ),
@@ -113,37 +78,70 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  // Upcoming List
-  Widget _buildUpcomingList() {
-    return ListView(
-      children: [
-        _buildScheduleCard('Dr. James', 'Pulmonologist', '05/05/2024',
-            '01:00 PM', 'Confirmed'),
-        _buildScheduleCard('Dr. Arham', 'Pulmonologist', '15/07/2024',
-            '05:00 PM', 'Confirmed'),
-        _buildScheduleCard('Dr. Tabish', 'Pulmonologist', '25/08/2024',
-            '02:30 PM', 'Confirmed'),
-      ],
-    );
-  }
+  // Fetch appointments from Firestore
+  Widget _buildAppointmentsList(String status) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore
+          .collection('appoinments')
+          .where('status', isEqualTo: status)
+          .where('pid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Center(child: Text('No appointments available.'));
+        }
 
-  // Completed List
-  Widget _buildCompletedList() {
-    return ListView(
-      children: [
-        _buildScheduleCard(
-            'Dr. Asad', 'Pulmonologist', '05/05/2024', '01:30 PM', 'Completed'),
-      ],
-    );
-  }
+        var appointments = snapshot.data!.docs;
+        log(snapshot.data!.docs.length.toString());
 
-  // Cancelled List
-  Widget _buildCancelledList() {
-    return ListView(
-      children: [
-        _buildScheduleCard('Dr. Haris', 'Pulmonologist', '05/06/2024',
-            '01:00 PM', 'Cancelled'),
-      ],
+        return ListView.builder(
+          itemCount: appointments.length,
+          itemBuilder: (context, index) {
+            var appointment = appointments[index];
+            return StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(appointment['did'])
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  // Check if the snapshot is loading
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  // Check if there's an error
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  // If no data is found
+                  if (!snapshot.hasData) {
+                    return Center(child: Text('No data found.'));
+                  }
+
+                  final data = snapshot.data;
+
+                  DateTime dateTime = appointments[index]['time'].toDate();
+                  // Format Date and Time
+                  String formattedDate =
+                      "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+                  String formattedTime =
+                      "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
+
+                  return _buildScheduleCard(
+                    data!['fullName'] ?? '',
+                    data['designation'] ?? '',
+                    formattedDate,
+                    formattedTime,
+                    appointment['status'],
+                  );
+                });
+          },
+        );
+      },
     );
   }
 
@@ -163,8 +161,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(
-                    'lib/assets/doc5.png'), // Doctor's image placeholder
+                backgroundImage: AssetImage('lib/assets/doc5.png'),
                 radius: 20.sp,
               ),
               SizedBox(width: 4.w),
@@ -193,12 +190,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Icon(Icons.calendar_today_outlined,
                       size: 16.sp, color: Colors.grey),
                   SizedBox(width: 2.w),
-                  Text(
-                    date,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                    ),
-                  ),
+                  Text(date, style: TextStyle(fontSize: 16.sp)),
                 ],
               ),
               Row(
@@ -206,12 +198,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Icon(Icons.access_time_outlined,
                       size: 16.sp, color: Colors.grey),
                   SizedBox(width: 2.w),
-                  Text(
-                    time,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                    ),
-                  ),
+                  Text(time, style: TextStyle(fontSize: 16.sp)),
                 ],
               ),
             ],
@@ -262,13 +249,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       borderRadius: BorderRadius.circular(20.sp),
                     ),
                   ),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: Text('Cancel',
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white)),
                 ),
             ],
           ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tubulert/colors/colors.dart';
 import 'package:tubulert/screens/main/bottom_nav_bar.dart';
+import 'package:tubulert/screens/main/home/home_screen.dart';
 import 'package:tubulert/screens/onboarding/onboarding_screen1.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              const BottomNavBar(), // Replace with your home screen
+                              HomeScreen(), // Replace with your home screen
                         ),
                       );
                     });

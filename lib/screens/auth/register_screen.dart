@@ -27,6 +27,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool isLoading = false;
 
+  // Method to determine userType (can be extended for other sources like web registration)
+  String getUserType() {
+    return 'Patient'; // This is hardcoded for mobile registration. Can be extended for web or other sources.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           password: _passwordController.text.trim(),
                         );
 
+                        // Save the user data with the userType set to "Patient"
                         await FirebaseFirestore.instance
                             .collection('users')
                             .doc(userCredential.user!.uid)
@@ -152,6 +158,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           'first_name': _firstNameController.text.trim(),
                           'last_name': _lastNameController.text.trim(),
                           'email': _emailController.text.trim(),
+                          'user_type':
+                              getUserType(), // Set userType based on registration source
                         });
 
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -174,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Error $e',
+                              'Error: $e',
                             ),
                           ),
                         );
